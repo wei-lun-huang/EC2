@@ -15,6 +15,14 @@ jobs:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
     # runs-on: ubuntu-latest
     runs-on: self-hosted
+    steps:
+    - name: Debug Info
+      run: |
+        whoami
+        groups $USER
+        env
+    - name: Check Docker version
+      run: docker --version
     services:
       mysql:
         image: mysql:8.0
