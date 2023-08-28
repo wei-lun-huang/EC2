@@ -15,14 +15,6 @@ jobs:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
     # runs-on: ubuntu-latest
     runs-on: self-hosted
-    steps:
-    - name: Debug Info
-      run: |
-        whoami
-        groups $USER
-        env
-    - name: Check Docker version
-      run: docker --version
     services:
       mysql:
         image: mysql:8.0
@@ -32,6 +24,13 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
+      - name: Debug Info
+        run: |
+          whoami
+          groups $USER
+          env
+      - name: Check Docker version
+        run: docker --version
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Python
