@@ -14,17 +14,6 @@ print(db_port)
 db_name = os.environ.get("MYSQL_DB")
 print(db_name)
 
-# db_user = sys.argv[1]
-# print(db_user)
-# db_password = sys.argv[2]
-# print(db_password)
-# db_host = sys.argv[3]
-# print(db_host)
-# db_port = int(sys.argv[4])
-# print(db_port)
-# db_name = sys.argv[5]
-# print(db_name)
-
 
 db_url = (
     f"mysql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}?charset=utf8mb4"
