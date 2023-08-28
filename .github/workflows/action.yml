@@ -30,26 +30,30 @@ jobs:
         with:
           python-version: 3.9
       - name: Set environment variables
-        run: |
-          if [[ $GITHUB_REF == refs/heads/develop ]]; then
+      run: |
+        case ${{ github.event.pull_request.base.ref }} in
+          develop)
             export MYSQL_USER="${{ secrets.DB_DEV_USER }}"
             export MYSQL_PWD="${{ secrets.DB_DEV_PASSWORD }}"
             export MYSQL_HOST="${{ secrets.DB_DEV_HOST }}"
             export MYSQL_PORT="${{ secrets.DB_DEV_PORT }}"
             export MYSQL_DB="${{ secrets.DB_DEV_DATABASE }}"
-          elif [[ $GITHUB_REF == refs/heads/release ]]; then
+            ;;
+          release)
             export MYSQL_USER="${{ secrets.DB_STAGING_USER }}"
             export MYSQL_PWD="${{ secrets.DB_STAGING_PASSWORD }}"
             export MYSQL_HOST="${{ secrets.DB_STAGING_HOST }}"
             export MYSQL_PORT="${{ secrets.DB_STAGING_PORT }}"
             export MYSQL_DB="${{ secrets.DB_STAGING_DATABASE }}"
-          elif [[ $GITHUB_REF == refs/heads/master ]]; then
+            ;;
+          master)
             export MYSQL_USER="${{ secrets.DB_PROD_USER }}"
             export MYSQL_PWD="${{ secrets.DB_PROD_PASSWORD }}"
             export MYSQL_HOST="${{ secrets.DB_PROD_HOST }}"
             export MYSQL_PORT="${{ secrets.DB_PROD_PORT }}"
             export MYSQL_DB="${{ secrets.DB_PROD_DATABASE }}"
-          fi
+            ;;
+        esac
       - name: Echo
         run: |
           set -x
