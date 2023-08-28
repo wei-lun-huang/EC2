@@ -29,19 +29,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Echo
-        run: |
-          echo $MYSQL_USER
-          echo $MYSQL_PWD
-          echo $MYSQL_HOST
-          echo $MYSQL_PORT
-          echo $MYSQL_DB
-      - name: Install dependencies
-        run: |
-          pip install -r pip-requirements.txt
-      - name: Run
-        run: |
-          python model.py
       - name: Set environment variables
         run: |
           if [[ $GITHUB_REF == refs/heads/develop ]]; then
@@ -63,3 +50,19 @@ jobs:
             export MYSQL_PORT="${{ secrets.DB_PROD_PORT }}"
             export MYSQL_DB="${{ secrets.DB_PROD_DATABASE }}"
           fi
+      - name: Echo
+        run: |
+          echo $MYSQL_USER
+          echo $MYSQL_PWD
+          echo $MYSQL_HOST
+          echo $MYSQL_PORT
+          echo $MYSQL_DB
+      - name: Install dependencies
+        run: |
+          pwd
+          ls
+          pip install -r pip-requirements.txt
+      - name: Run
+        run: |
+          python model.py
+
