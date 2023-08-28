@@ -39,6 +39,7 @@ jobs:
               export MYSQL_PORT="${{ secrets.DB_DEV_PORT }}"
               export MYSQL_DB="${{ secrets.DB_DEV_DATABASE }}"
               export test="test"
+              echo "testttt"
               ;;
             release)
               export MYSQL_USER="${{ secrets.DB_STAGING_USER }}"
