@@ -15,16 +15,16 @@ jobs:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
     # runs-on: ubuntu-latest
     runs-on: self-hosted
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: testdb
-          MYSQL_ROOT_PASSWORD: testrootpass
-        ports:
-          - 3306:3306
-          # Before continuing, verify the mysql container is reachable from the ubuntu host
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # services:
+    #   mysql:
+    #     image: mysql:8.0
+    #     env:
+    #       MYSQL_DATABASE: testdb
+    #       MYSQL_ROOT_PASSWORD: testrootpass
+    #     ports:
+    #       - 3306:3306
+    #       # Before continuing, verify the mysql container is reachable from the ubuntu host
+    #     options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout
         uses: actions/checkout@v3
