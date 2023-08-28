@@ -48,5 +48,6 @@ jobs:
           pip install -r pip-requirements.txt
       - name: Run
         run: |
-          python model.py
+          # python model.py
+          python model.py $MYSQL_USER $MYSQL_PWD $MYSQL_HOST $MYSQL_PORT $MYSQL_DB
 
