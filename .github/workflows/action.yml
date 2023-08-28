@@ -37,12 +37,12 @@ jobs:
           MYSQL_HOST: ${{ secrets.DB_DEV_HOST }}
           MYSQL_PORT: ${{ secrets.DB_DEV_PORT }}
           MYSQL_DB: ${{ secrets.DB_DEV_DATABASE }}
-        # run: |
-        #   echo "MYSQL_USER=$MYSQL_USER"
-        #   echo "MYSQL_PWD=$MYSQL_PWD"
-        #   echo "MYSQL_HOST=$MYSQL_HOST"
-        #   echo "MYSQL_PORT=$MYSQL_PORT"
-        #   echo "MYSQL_DB=$MYSQL_DB"
+        run: |
+          echo "MYSQL_USER=$MYSQL_USER"
+          echo "MYSQL_PWD=$MYSQL_PWD"
+          echo "MYSQL_HOST=$MYSQL_HOST"
+          echo "MYSQL_PORT=$MYSQL_PORT"
+          echo "MYSQL_DB=$MYSQL_DB"
       - name: Install dependencies
         run: |
           pip install -r pip-requirements.txt
