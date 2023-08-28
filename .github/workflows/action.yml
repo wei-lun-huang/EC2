@@ -45,5 +45,5 @@ jobs:
           EOF
       - name: Retrieve record from table
         run: |
-          result=$(mysql -h 127.0.0.1 -u root -ptestrootpass -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
+          result=$(mysql -h 127.0.0.1 -u root -ptestrootpass -D testdb -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
           echo "Result: $result"
