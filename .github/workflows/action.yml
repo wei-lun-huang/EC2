@@ -1,0 +1,49 @@
+name: Main workflow
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - develop
+      - release
+      - master
+    types: [opened, synchronize, closed]
+jobs:
+  tests:
+    name: Test
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testdb
+          MYSQL_ROOT_PASSWORD: testrootpass
+        ports:
+          - 3306:3306
+          # Before continuing, verify the mysql container is reachable from the ubuntu host
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      # - name: Install dependencies
+      #   run: |
+      #     pip install --target ./package -r ./pip-requirements.txt
+      - name: Create table and insert record
+        run: |
+          mysql -h 127.0.0.1 -u root -ptestrootpass testdb <<EOF
+          CREATE TABLE IF NOT EXISTS example_table (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255)
+          );
+          INSERT INTO example_table (name) VALUES ('example_record');
+          EOF
+      - name: Retrieve record from table
+        run: |
+          result=$(mysql -h 127.0.0.1 -u root -ptestrootpass -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
+          echo "Result: $result"
