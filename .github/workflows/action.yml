@@ -52,6 +52,7 @@ jobs:
           fi
       - name: Echo
         run: |
+          set -x
           echo $MYSQL_USER
           echo $MYSQL_PWD
           echo $MYSQL_HOST
