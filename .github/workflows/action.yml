@@ -13,7 +13,8 @@ jobs:
   tests:
     name: Test
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
     services:
       mysql:
         image: mysql:8.0
