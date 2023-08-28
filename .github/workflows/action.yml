@@ -37,7 +37,7 @@ jobs:
       #     pip install --target ./package -r ./pip-requirements.txt
       - name: Create table and insert record
         run: |
-          mysql -h 127.0.0.1 -u root -ptestrootpass testdb <<EOF
+          sudo mysql -u root testdb <<EOF
           CREATE TABLE IF NOT EXISTS example_table (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255)
@@ -46,5 +46,5 @@ jobs:
           EOF
       - name: Retrieve record from table
         run: |
-          result=$(mysql -h 127.0.0.1 -u root -ptestrootpass -D testdb -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
+          result=$(sudo mysql -u root -D testdb -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
           echo "Result: $result"
