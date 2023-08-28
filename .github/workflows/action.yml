@@ -12,38 +12,47 @@ on:
 jobs:
   tests:
     name: Test
-    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_DATABASE: testdb
-          MYSQL_ROOT_PASSWORD: testrootpass
-        ports:
-          - 3306:3306
-          # Before continuing, verify the mysql container is reachable from the ubuntu host
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    # if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    # runs-on: ubuntu-latest
+    runs-on: self-hosted
+    env:
+      MYSQL_USER: ${{ secrets.DB_DEV_USER }}
+      MYSQL_PWD: ${{ secrets.DB_DEV_PASSWORD }}
+      MYSQL_HOST: ${{ secrets.DB_DEV_HOST }}
+      MYSQL_PORT: ${{ secrets.DB_DEV_PORT }}
+      MYSQL_DB: ${{ secrets.DB_DEV_DATABASE }}
     steps:
+      - name: Debug Info
+        run: |
+          whoami
+          groups $USER
+          env
+      - name: Check Docker version
+        run: docker --version
       - name: Checkout
         uses: actions/checkout@v3
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      # - name: Install dependencies
+      # - name: Set Environment Variables
+      #   if: github.event.pull_request.base.ref == 'develop'
+      #   env:
+      #     MYSQL_USER: ${{ secrets.DB_DEV_USER }}
+      #     MYSQL_PWD: ${{ secrets.DB_DEV_PASSWORD }}
+      #     MYSQL_HOST: ${{ secrets.DB_DEV_HOST }}
+      #     MYSQL_PORT: ${{ secrets.DB_DEV_PORT }}
+      #     MYSQL_DB: ${{ secrets.DB_DEV_DATABASE }}
       #   run: |
-      #     pip install --target ./package -r ./pip-requirements.txt
-      - name: Create table and insert record
+      #     echo $MYSQL_USER
+      #     echo $MYSQL_PWD
+      #     echo $MYSQL_HOST
+      #     echo $MYSQL_PORT
+      #     echo $MYSQL_DB
+      - name: Install dependencies
         run: |
-          mysql -h 127.0.0.1 -u root -ptestrootpass testdb <<EOF
-          CREATE TABLE IF NOT EXISTS example_table (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            name VARCHAR(255)
-          );
-          INSERT INTO example_table (name) VALUES ('example_record');
-          EOF
-      - name: Retrieve record from table
+          pip install -r pip-requirements.txt --no-cache-dir
+      - name: Run
         run: |
-          result=$(mysql -h 127.0.0.1 -u root -ptestrootpass -Bse "SELECT * FROM example_table WHERE name = 'example_record';")
-          echo "Result: $result"
+          python model.py
+
