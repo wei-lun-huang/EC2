@@ -51,7 +51,7 @@ jobs:
       #     echo $MYSQL_DB
       - name: Install dependencies
         run: |
-          pip install -r pip-requirements.txt
+          pip install -r pip-requirements.txt --no-cache-dir
       - name: Run
         run: |
           python model.py
