@@ -2,6 +2,7 @@ import os
 import sys
 from sqlalchemy import create_engine
 
+print(os.environ)
 db_user = os.environ.get("MYSQL_USER")
 print(db_user)
 db_password = os.environ.get("MYSQL_PWD")
