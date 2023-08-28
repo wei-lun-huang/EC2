@@ -19,7 +19,7 @@ db_password = sys.argv[2]
 print(db_password)
 db_host = sys.argv[3]
 print(db_host)
-db_port = sys.argv[4]
+db_port = int(sys.argv[4])
 print(db_port)
 db_name = sys.argv[5]
 print(db_name)
