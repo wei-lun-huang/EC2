@@ -5,7 +5,7 @@ on:
       ref:
         description: 'GOGO_ENV'
         required: true
-        # default: 'development'
+        default: 'development'
   push:
     branches:
       - master
