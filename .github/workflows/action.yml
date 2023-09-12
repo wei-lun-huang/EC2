@@ -6,6 +6,11 @@ on:
         description: 'GOGO_ENV'
         required: true
         default: 'development'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
   push:
     branches:
       - master
