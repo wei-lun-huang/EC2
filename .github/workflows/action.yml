@@ -8,7 +8,7 @@ on:
       - develop
       - release
       - master
-    types: [opened, synchronize, closed]
+    types: [opened, synchronize]
 jobs:
   pre_test:
     runs-on: self-hosted
