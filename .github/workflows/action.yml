@@ -2,7 +2,7 @@ name: Main workflow
 on:
   workflow_dispatch:
     inputs:
-      ref:
+      env:
         description: 'GOGO_ENV'
         required: true
         default: 'development'
@@ -27,8 +27,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: echo
         run: |
-          echo ${{ github.event.inputs.ref }}
-          echo ${{ inputs.ref }}
+          echo ${{ github.event.inputs.env }}
+          echo ${{ inputs.env }}
           BASE_REF=${{ github.event.pull_request.base.ref }}
           BASE_REF=${BASE_REF:-default_value}
           if [[ $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
