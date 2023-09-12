@@ -23,6 +23,7 @@ jobs:
           elif [[ $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
             echo "GOGO_ENV=production" >> $GITHUB_OUTPUT
           fi
+          echo $GOGO_ENV
           echo "hello world"
 
   # tests:
