@@ -9,7 +9,7 @@ on:
         type: choice
         options:
           - develop
-          - staging
+          - release
           - production
   push:
     branches:
