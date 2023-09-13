@@ -5,10 +5,10 @@ on:
       env:
         description: 'GOGO_ENV'
         required: true
-        default: 'development'
+        default: 'develop'
         type: choice
         options:
-          - development
+          - develop
           - staging
           - production
   push:
