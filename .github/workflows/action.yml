@@ -21,23 +21,34 @@ on:
       - master
     types: [opened, synchronize]
 jobs:
-  pre_test:
+  set_envs:
     runs-on: self-hosted
+    outputs:
+      GOGO_ENV: ${{ steps.set_env.outputs.GOGO_ENV }}
     steps:
       - uses: actions/checkout@v2
-      - name: echo
+      - name: Set environment variables
+        id: set_env
         run: |
           echo ${{ inputs.env }}
           BASE_REF=${{ github.event.pull_request.base.ref }}
           BASE_REF=${BASE_REF:-default_value}
-          if [[ $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
+          if [[ '${{ inputs.env }}' == 'release' || $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
             echo "GOGO_ENV=staging" >> "$GITHUB_OUTPUT"
-          elif [[ $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
+          elif [[ '${{ inputs.env }}' == 'master' || $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
             echo "GOGO_ENV=production" >> "$GITHUB_OUTPUT"
           fi
-          echo $GOGO_ENV
           echo "hello world"
-
+  echo:
+      runs-on: self-hosted
+      needs: set_envs
+      steps:
+        - uses: actions/checkout@v2
+        - name: echo
+          env:
+            GOGO_ENV: ${{needs.set_envs.outputs.GOGO_ENV}}
+          run: |
+            echo $GOGO_ENV
   # tests:
   #   name: Test
   #   # if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
