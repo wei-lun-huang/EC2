@@ -10,7 +10,7 @@ on:
         options:
           - develop
           - release
-          - production
+          - master
   push:
     branches:
       - master
