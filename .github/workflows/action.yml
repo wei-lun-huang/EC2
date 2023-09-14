@@ -1,5 +1,7 @@
 name: Main workflow
 on:
+  repository_dispatch:
+    types: [release-test,master-test]
   workflow_dispatch:
     inputs:
       env:
@@ -27,15 +29,18 @@ jobs:
       GOGO_ENV: ${{ steps.set_env.outputs.GOGO_ENV }}
     steps:
       - uses: actions/checkout@v2
+      - env:
+          branch: ${{ github.event.client_payload.branch }}
       - name: Set environment variables
         id: set_env
         run: |
+          echo $branch
           echo ${{ inputs.env }}
           BASE_REF=${{ github.event.pull_request.base.ref }}
           BASE_REF=${BASE_REF:-default_value}
-          if [[ '${{ inputs.env }}' == 'release' || $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
+          if [[ $branch == 'release' || '${{ inputs.env }}' == 'release' || $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
             echo "GOGO_ENV=staging" >> "$GITHUB_OUTPUT"
-          elif [[ '${{ inputs.env }}' == 'master' || $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
+          elif [[ $branch == 'master' || '${{ inputs.env }}' == 'master' || $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
             echo "GOGO_ENV=production" >> "$GITHUB_OUTPUT"
           fi
           echo "hello world"
