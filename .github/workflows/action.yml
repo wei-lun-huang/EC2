@@ -39,9 +39,9 @@ jobs:
           BASE_REF=${{ github.event.pull_request.base.ref }}
           # BASE_REF=${BASE_REF:-default_value}
           echo $BASE_REF
-          if [[ '$branch' == 'release' || 'env' == 'release' || '$BASE_REF' == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
+          if [[ $branch == 'release' || $env == 'release' || $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
             echo "GOGO_ENV=staging" >> "$GITHUB_OUTPUT"
-          elif [[ '$branch' == 'master' || 'env' == 'master' || '$BASE_REF' == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
+          elif [[ $branch == 'master' || $env == 'master' || $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
             echo "GOGO_ENV=production" >> "$GITHUB_OUTPUT"
           fi
           echo "hello world"
