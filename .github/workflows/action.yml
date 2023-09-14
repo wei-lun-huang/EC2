@@ -32,14 +32,16 @@ jobs:
       - name: Set environment variables
         id: set_env
         run: |
-          echo ${{ github.event.client_payload.branch }}
+          env=${{ inputs.env }}
+          echo $env
           branch=${{ github.event.client_payload.branch }}
-          echo ${{ inputs.env }}
+          echo $branch
           BASE_REF=${{ github.event.pull_request.base.ref }}
-          BASE_REF=${BASE_REF:-default_value}
-          if [[ $branch == 'release' || '${{ inputs.env }}' == 'release' || $BASE_REF == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
+          # BASE_REF=${BASE_REF:-default_value}
+          echo $BASE_REF
+          if [[ '$branch' == 'release' || 'env' == 'release' || '$BASE_REF' == 'release' || '${{ github.event.schedule }}' == '0 13 * * *' ]]; then
             echo "GOGO_ENV=staging" >> "$GITHUB_OUTPUT"
-          elif [[ $branch == 'master' || '${{ inputs.env }}' == 'master' || $BASE_REF == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
+          elif [[ '$branch' == 'master' || 'env' == 'master' || '$BASE_REF' == 'master' || '${{ github.event.schedule }}' == '0 15 * * *' ]]; then
             echo "GOGO_ENV=production" >> "$GITHUB_OUTPUT"
           fi
           echo "hello world"
